@@ -1,53 +1,39 @@
-# Bond Pricing & Risk Dashboard
+# Fixed Income Analytics Terminal
 
-An interactive fixed-income analytics project designed for **Fixed Income Sales** discussions. It models the price and rate sensitivity of a standard fixed-coupon bond with reproducible Python calculations.
+A Python/Streamlit dashboard for bond pricing and interest rate risk analysis, inspired by Bloomberg YAS.
+
+The project focuses on fixed-rate US Treasury bonds, with an independently coded pricing engine and market data retrieved from FRED.
 
 ## Features
 
-- Price a fixed-coupon bond using a constant yield to maturity (YTM).
-- Solve for YTM from an observed price.
-- Calculate Macaulay duration, modified duration, convexity, and DV01.
-- Run parallel yield-shock scenarios (-200 to +200 basis points).
-- Visualize the price–yield curve and scenario P&L in Streamlit.
-- Unit tests for basic financial identities.
+- **Bond pricing:** Clean/dirty price, YTM, accrued interest and settlement value.
+- **Risk analytics:** Modified duration, convexity and DV01.
+- **Yield curve:** US Treasury yields (1Y–30Y), 2s10s spread and historical data from FRED.
+- **Scenario analysis:** Parallel rate shocks, steepening and flattening scenarios, with estimated P&L.
+- **Market data:** Optional bond ETF prices via Yahoo Finance.
 
-## Run locally (Mac / VS Code)
+Bond characteristics and market prices can be adjusted directly in the dashboard.
+
+## Tech Stack
+
+Python · Streamlit · NumPy · Pandas · Matplotlib · FRED · yfinance (optional)
+
+## Run Locally
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m pytest -q
-python -m streamlit run app.py
+git clone https://github.com/justinearbert/bond-pricing-risk-dashboard.git
+cd bond-pricing-risk-dashboard
+pip install streamlit pandas numpy matplotlib yfinance
+streamlit run app.py
 ```
 
-If you use Anaconda, you can also select your Anaconda Python interpreter in VS Code, then install the dependencies into that environment.
+## Notes
 
-## Finance example
+The pricing engine assumes regular semiannual coupon payments and Treasury-style conventions. Market prices are entered manually; FRED provides published benchmark yields rather than live bond quotes.
 
-A 5-year bond with €1,000 face value, 4% annual coupon and semiannual payments is discounted using a 4.5% nominal annual YTM. Try moving the yield from 4.5% to 5.5% to see the price impact. **DV01** indicates the *positive magnitude* of the approximate price loss if yield rises by 1 basis point for the specified face amount.
+Curve scenarios are simplified and intended for analytical purposes, not production trading.
 
-## Core formulas
+## Author
 
-Cash flows paid every `1/m` year (at exact coupon dates):
-
-- Price: `P(y) = sum(CF_t / (1 + y/m)^(m*t))`.
-- Macaulay duration: PV-weighted average time to cash flow.
-- Modified duration: `D_mod = D_Mac / (1 + y/m)`.
-- Convexity: `(1/P) * d²P/dy²`.
-- DV01: approximately `-dP/dy * 0.0001`, estimated by a centered 1bp difference.
-
-## Important limitations
-
-This is an **educational tool, not investment advice or a live trading pricer**. It assumes fixed deterministic cash flows, no default, no accrued interest, no transaction costs, no early redemption, a flat discount rate (YTM), and valuation on a coupon date. Rate shocks are parallel moves in the bond's YTM, not a full term-structure or spread-risk simulation. For real bonds, day counts, settlement, clean/dirty price, credit spreads and market conventions matter.
-
-## Repository structure
-
-- `bond_math.py` — pricing and risk functions
-- `app.py` — Streamlit dashboard
-- `test_bond_math.py` — finance sanity checks
-- `requirements.txt` — Python dependencies
-
-## Suggested next steps
-
-Integrate government yield curves, benchmark spread analysis, issuer comparisons, and a client-ready fixed-income factsheet.
+Justine Arbert  
+MSc Financial Markets & Investments — SKEMA Business School
