@@ -1,4 +1,4 @@
-# Fixed Income Analytics Terminal
+# Fixed Income Analytics | YAS-Inspired Bond Pricing & Risk
 
 A Python/Streamlit dashboard for bond pricing and interest rate risk analysis, inspired by Bloomberg YAS.
 
